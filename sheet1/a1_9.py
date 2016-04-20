@@ -21,9 +21,9 @@ if __name__ == "__main__":
     X2 = np.random.normal(MU2, SIGMA2, N)
 
     # calculate propagated error from means, sigma
-    PROP_X1 = 1 / np.mean(X2)**2 * SIGMA1**2
-    PROP_X2 = np.mean(X1)**2 / np.mean(X2)**4 * SIGMA2**2
-    PROP = PROP_X1 + PROP_X2
+    D_X1 = 1 / np.mean(X2)**2 * SIGMA1**2
+    D_X2 = np.mean(X1)**2 / np.mean(X2)**4 * SIGMA2**2
+    ERR_PROP = D_X1 + D_X2
 
     # output
     print("mean X1: %s" % (np.mean(X1)))
@@ -32,8 +32,8 @@ if __name__ == "__main__":
     print("stddev X1: %s" % (np.std(X1)))
     print("stddev X2: %s" % (np.std(X2)))
     print("stddev X1/X2: %s" % (np.std(X1/X2)))
-    print("propagated uncertainty (sq): %s" % (PROP))
-    print("propagated uncertainty (rt): %s" % (np.sqrt(PROP)))
+    print("propagated uncertainty (sq): %s" % (ERR_PROP))
+    print("propagated uncertainty (rt): %s" % (np.sqrt(ERR_PROP)))
 
     # plot
     plt.hist(X1/X2, 50, normed=True)
