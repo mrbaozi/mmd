@@ -1,7 +1,6 @@
 #!/usr/local/bin/python3
 
 import sys
-from pprint import pprint
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -16,9 +15,10 @@ if __name__ == "__main__":
     MU1, SIGMA1 = 2, 1.5
     MU2, SIGMA2 = 3, 2.2
 
-    # data
+    # DATA
     X1 = np.random.normal(MU1, SIGMA1, N)
     X2 = np.random.normal(MU2, SIGMA2, N)
+    DATA = X1/X2
 
     # calculate propagated error from means, sigma
     D_X1 = 1 / np.mean(X2)**2 * SIGMA1**2
@@ -36,5 +36,6 @@ if __name__ == "__main__":
     print("propagated uncertainty (rt): %s" % (np.sqrt(ERR_PROP)))
 
     # plot
-    plt.hist(X1/X2, 50, normed=True)
+    AXIS = np.linspace(-10, 10, 100)
+    plt.hist(DATA.ravel(), AXIS)
     plt.show()
