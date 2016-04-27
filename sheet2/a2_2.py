@@ -15,6 +15,7 @@ def get_cor_mat(covmat):
     return cormat
 
 if __name__ == "__main__":
+
     NPOINTS = 10
     XOF = 10
     PD = 1  # polynomial degree
@@ -45,7 +46,7 @@ if __name__ == "__main__":
     CORFIT = get_cor_mat(COVFIT)
 
     # interpolation for plotting
-    PLOTRANGE = np.linspace(XOF, XOF + NPOINTS, 100)                # x-axis
+    PLOTRANGE = np.linspace(min(XDATA) - 1, max(XDATA) + 1, 200)    # x-axis
     TT = np.vstack([PLOTRANGE**(PD - i) for i in range(PD + 1)]).T  # polynom.
     YI = np.dot(TT, PARAMS)                                         # y-axis
 
@@ -54,7 +55,8 @@ if __name__ == "__main__":
     COV_Y = np.dot(TT, np.dot(COVMAT, TT.T))
 
     # standard deviation (sigma)
-    SIG_Y = np.sqrt(np.diag(COV_Y))
+    VAR_Y = np.diag(COV_Y)
+    SIG_Y = np.sqrt(VAR_Y)
 
     # matrix output
     print("data covariance matrix:\n%s\n" % (COVDATA))
