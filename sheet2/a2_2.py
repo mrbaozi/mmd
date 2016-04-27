@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-def simple_error(fun, covmat):
-    return np.sqrt(delta_a**2 + (xval * delta_b)**2)
-
-
 def get_cor_mat(covmat):
-    ''' calculate correlation matrix from covariance matrix '''
+    ''' calculates correlation matrix from covariance matrix '''
     dim = covmat.shape
     cormat = np.empty(dim)
     for i in range(dim[0]):
@@ -20,6 +17,16 @@ def get_cor_mat(covmat):
 if __name__ == "__main__":
     NPOINTS = 10
     XOF = 10
+    PD = 1  # polynomial degree
+
+    try:
+        IS_CORR = int(sys.argv[1])
+    except IndexError:
+        IS_CORR = 0
+    try:
+        NSIG = int(sys.argv[2])
+    except IndexError:
+        NSIG = 1
 
     # generate random data and errors
     X = np.array([x for x in range(XOF, XOF + NPOINTS, 1)])
@@ -29,14 +36,25 @@ if __name__ == "__main__":
     XDATA = np.add(X, EX)
     YDATA = np.add(Y, EY)
 
-    # data cov & cor
-
+    # data covariance & correlation
     COVDATA = np.cov(XDATA, YDATA)
     CORDATA = get_cor_mat(COVDATA)
 
-    # linear fit
-    PARAMS, COVFIT = np.polyfit(XDATA, YDATA, 1, cov=True)
+    # polynomial fit
+    PARAMS, COVFIT = np.polyfit(XDATA, YDATA, PD, cov=True)
     CORFIT = get_cor_mat(COVFIT)
+
+    # interpolation for plotting
+    PLOTRANGE = np.linspace(XOF, XOF + NPOINTS, 100)                # x-axis
+    TT = np.vstack([PLOTRANGE**(PD - i) for i in range(PD + 1)]).T  # polynom.
+    YI = np.dot(TT, PARAMS)                                         # y-axis
+
+    # y-axis errors from covariance matrix
+    COVMAT = COVFIT if IS_CORR else np.diag(np.diag(COVFIT))
+    COV_Y = np.dot(TT, np.dot(COVMAT, TT.T))
+
+    # standard deviation (sigma)
+    SIG_Y = np.sqrt(np.diag(COV_Y))
 
     # matrix output
     print("data covariance matrix:\n%s\n" % (COVDATA))
@@ -45,10 +63,12 @@ if __name__ == "__main__":
     print("fit covariance matrix:\n%s\n" % (COVFIT))
     print("fit correlation matrix:\n%s\n" % (CORFIT))
 
-    # error band
+    # plotting
+    FG, AX = plt.subplots(1, 1)
+    plt.fill_between(PLOTRANGE, YI + NSIG*SIG_Y, YI - NSIG*SIG_Y, alpha=.25)
+    AX.plot(PLOTRANGE, YI, '-')
+    AX.plot(XDATA, YDATA, 'ro')
+    AX.axis('tight')
 
-    # plot
-    T1 = np.arange(XOF, XOF + NPOINTS, 1)
-    plt.plot(T1, PARAMS[1] + PARAMS[0]*T1)
-    plt.plot(XDATA, YDATA, 'ro')
+    FG.canvas.draw()
     plt.show()
