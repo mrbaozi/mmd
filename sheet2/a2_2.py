@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-# def simple_error(xval, covmat):
-#     return np.sqrt(delta_a**2 + (xval * delta_b)**2)
+def simple_error(fun, covmat):
+    return np.sqrt(delta_a**2 + (xval * delta_b)**2)
 
 
 def get_cor_mat(covmat):
