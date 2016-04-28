@@ -29,6 +29,10 @@ if __name__ == "__main__":
                         help='number of random points for fit')
     PARSER.add_argument('--pd', type=int, default=1,
                         help='polynomial degree for fit')
+    PARSER.add_argument('--xerr', type=float, default=.5,
+                        help='standard error for x-data')
+    PARSER.add_argument('--yerr', type=float, default=.5,
+                        help='standard error for y-data')
     ARGS = PARSER.parse_args()
 
     # assign variables
@@ -37,12 +41,14 @@ if __name__ == "__main__":
     XOF = ARGS.xof
     NPOINTS = ARGS.npoints
     PD = ARGS.pd
+    XERR = ARGS.xerr
+    YERR = ARGS.yerr
 
     # generate random data and errors
     X = np.array([x for x in range(XOF, XOF + NPOINTS, 1)])
     Y = np.array([y for y in range(XOF, XOF + NPOINTS, 1)])
-    EX = np.array([np.random.normal(0, 0.5) for _ in range(NPOINTS)])
-    EY = np.array([np.random.normal(0, 0.5) for _ in range(NPOINTS)])
+    EX = np.array([np.random.normal(0, XERR) for _ in range(NPOINTS)])
+    EY = np.array([np.random.normal(0, YERR) for _ in range(NPOINTS)])
     XDATA = np.add(X, EX)
     YDATA = np.add(Y, EY)
 
@@ -78,7 +84,7 @@ if __name__ == "__main__":
     FG, AX = plt.subplots(1, 1)
     plt.fill_between(PLOTRANGE, YI + NSIG*SIG_Y, YI - NSIG*SIG_Y, alpha=.25)
     AX.plot(PLOTRANGE, YI, '-')
-    AX.plot(XDATA, YDATA, 'ro')
+    AX.errorbar(XDATA, YDATA, xerr=XERR, yerr=YERR, fmt='ro')
     AX.axis('tight')
 
     FG.canvas.draw()
