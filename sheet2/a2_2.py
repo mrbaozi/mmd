@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -16,18 +16,27 @@ def get_cor_mat(covmat):
 
 if __name__ == "__main__":
 
-    NPOINTS = 10
-    XOF = 10
-    PD = 1  # polynomial degree
+    # input
+    TITLE = "Moderne Methoden der Datenanalyse - Blatt 02 Aufgabe 2.2"
+    PARSER = argparse.ArgumentParser(description=TITLE)
+    PARSER.add_argument('--corr', type=int, default=0,
+                        help='specify if fit arguments are correlated')
+    PARSER.add_argument('--sig', type=int, default=1,
+                        help='specify width of error band (n * sigma)')
+    PARSER.add_argument('--xof', type=int, default=10,
+                        help='start value for x')
+    PARSER.add_argument('--npoints', type=int, default=10,
+                        help='number of random points for fit')
+    PARSER.add_argument('--pd', type=int, default=1,
+                        help='polynomial degree for fit')
+    ARGS = PARSER.parse_args()
 
-    try:
-        IS_CORR = int(sys.argv[1])
-    except IndexError:
-        IS_CORR = 0
-    try:
-        NSIG = int(sys.argv[2])
-    except IndexError:
-        NSIG = 1
+    # assign variables
+    IS_CORR = ARGS.corr
+    NSIG = ARGS.sig
+    XOF = ARGS.xof
+    NPOINTS = ARGS.npoints
+    PD = ARGS.pd
 
     # generate random data and errors
     X = np.array([x for x in range(XOF, XOF + NPOINTS, 1)])
