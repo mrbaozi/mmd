@@ -1,21 +1,32 @@
 #!/usr/bin/env python3
 
-import sys
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
 
-    try:
-        N = int(sys.argv[1])
-    except IndexError:
-        N = 100
+    # input
+    TITLE = "Moderne Methoden der Datenanalyse - Blatt 01 Aufgabe 1.9"
+    PARSER = argparse.ArgumentParser(description=TITLE)
+    PARSER.add_argument('--n', type=int, default=100,
+                        help='number of events')
+    PARSER.add_argument('--mu1', type=float, default=2,
+                        help='mean of normal distribution #1')
+    PARSER.add_argument('--mu2', type=float, default=3,
+                        help='mean of normal distribution #2')
+    PARSER.add_argument('--sig1', type=float, default=1.5,
+                        help='standard deviation of distribution #1')
+    PARSER.add_argument('--sig2', type=float, default=2.2,
+                        help='standard deviation of distribution #2')
+    ARGS = PARSER.parse_args()
 
-    # sheet values
-    MU1, SIGMA1 = 2, 1.5
-    MU2, SIGMA2 = 3, 2.2
+    # assign values
+    N = ARGS.n
+    MU1, SIGMA1 = ARGS.mu1, ARGS.sig1
+    MU2, SIGMA2 = ARGS.mu2, ARGS.sig2
 
-    # DATA
+    # data
     X1 = np.random.normal(MU1, SIGMA1, N)
     X2 = np.random.normal(MU2, SIGMA2, N)
     DATA = X1/X2
