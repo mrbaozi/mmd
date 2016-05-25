@@ -153,12 +153,14 @@ def eval_annealing(args):
             q3.append([x, y])
 
     if args.plot:
-        xall, yall, tall = zip(*data)
         fg, ax = plt.subplots(1, 1)
         if args.path:
             for p in paths:
                 ax.plot(*zip(*p))
-        ax.plot(xall, yall, 'bo')
+        ax.plot(*zip(*q1), 'o')
+        ax.plot(*zip(*q2), 'o')
+        ax.plot(*zip(*q3), 'o')
+        ax.plot(*zip(*q4), 'o')
         plt.show()
 
     _, _, t = zip(*data)
