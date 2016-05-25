@@ -1,0 +1,349 @@
+
+Test 1: Variation of initialTemp
+-------------------------------
+
+initialTemp = 200, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 37.00%
+Average time per run: 0.01s
+
+
+initialTemp = 190, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 44.00%
+Average time per run: 0.01s
+
+
+initialTemp = 180, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 34.00%
+Average time per run: 0.01s
+
+
+initialTemp = 170, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 37.00%
+Average time per run: 0.01s
+
+
+initialTemp = 160, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 34.00%
+Average time per run: 0.01s
+
+
+initialTemp = 150, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 28.00%
+Average time per run: 0.01s
+
+
+initialTemp = 140, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 21.00%
+Average time per run: 0.01s
+
+
+initialTemp = 130, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 22.00%
+Average time per run: 0.01s
+
+
+initialTemp = 120, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 28.00%
+Average time per run: 0.01s
+
+
+initialTemp = 110, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 33.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 28.00%
+Average time per run: 0.01s
+
+
+initialTemp = 90, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 30.00%
+Average time per run: 0.01s
+
+
+initialTemp = 80, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 23.00%
+Average time per run: 0.01s
+
+
+initialTemp = 70, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 23.00%
+Average time per run: 0.01s
+
+
+initialTemp = 60, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 20.00%
+Average time per run: 0.00s
+
+
+initialTemp = 50, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 17.00%
+Average time per run: 0.00s
+
+
+initialTemp = 40, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 10.00%
+Average time per run: 0.00s
+
+
+initialTemp = 30, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 3.00%
+Average time per run: 0.00s
+
+
+initialTemp = 20, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 3.00%
+Average time per run: 0.00s
+
+
+initialTemp = 10, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 0.00%
+Average time per run: 0.00s
+
+
+
+Test 2: Variation of finalTemp
+-------------------------------
+
+initialTemp = 200, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 40.00%
+Average time per run: 0.01s
+
+
+initialTemp = 200, finalTemp = 11, coolingSpeed = 1, stepSize = 1
+Correct: 38.00%
+Average time per run: 0.00s
+
+
+initialTemp = 200, finalTemp = 21, coolingSpeed = 1, stepSize = 1
+Correct: 30.00%
+Average time per run: 0.00s
+
+
+initialTemp = 200, finalTemp = 31, coolingSpeed = 1, stepSize = 1
+Correct: 27.00%
+Average time per run: 0.00s
+
+
+initialTemp = 200, finalTemp = 41, coolingSpeed = 1, stepSize = 1
+Correct: 30.00%
+Average time per run: 0.00s
+
+
+initialTemp = 200, finalTemp = 51, coolingSpeed = 1, stepSize = 1
+Correct: 25.00%
+Average time per run: 0.00s
+
+
+initialTemp = 200, finalTemp = 61, coolingSpeed = 1, stepSize = 1
+Correct: 26.00%
+Average time per run: 0.00s
+
+
+initialTemp = 200, finalTemp = 71, coolingSpeed = 1, stepSize = 1
+Correct: 20.00%
+Average time per run: 0.00s
+
+
+initialTemp = 200, finalTemp = 81, coolingSpeed = 1, stepSize = 1
+Correct: 15.00%
+Average time per run: 0.00s
+
+
+initialTemp = 200, finalTemp = 91, coolingSpeed = 1, stepSize = 1
+Correct: 10.00%
+Average time per run: 0.00s
+
+
+
+Test 3: Temperature shift (dT = 100)
+-------------------------------
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 20.00%
+Average time per run: 0.01s
+
+
+initialTemp = 200, finalTemp = 101, coolingSpeed = 1, stepSize = 1
+Correct: 18.00%
+Average time per run: 0.00s
+
+
+initialTemp = 300, finalTemp = 201, coolingSpeed = 1, stepSize = 1
+Correct: 11.00%
+Average time per run: 0.00s
+
+
+initialTemp = 400, finalTemp = 301, coolingSpeed = 1, stepSize = 1
+Correct: 4.00%
+Average time per run: 0.00s
+
+
+initialTemp = 500, finalTemp = 401, coolingSpeed = 1, stepSize = 1
+Correct: 2.00%
+Average time per run: 0.00s
+
+
+initialTemp = 600, finalTemp = 501, coolingSpeed = 1, stepSize = 1
+Correct: 1.00%
+Average time per run: 0.00s
+
+
+initialTemp = 700, finalTemp = 601, coolingSpeed = 1, stepSize = 1
+Correct: 2.00%
+Average time per run: 0.00s
+
+
+initialTemp = 800, finalTemp = 701, coolingSpeed = 1, stepSize = 1
+Correct: 0.00%
+Average time per run: 0.00s
+
+
+initialTemp = 900, finalTemp = 801, coolingSpeed = 1, stepSize = 1
+Correct: 0.00%
+Average time per run: 0.00s
+
+
+initialTemp = 1000, finalTemp = 901, coolingSpeed = 1, stepSize = 1
+Correct: 1.00%
+Average time per run: 0.00s
+
+
+
+Test 4: Variation of coolingSpeed
+-------------------------------
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.01, stepSize = 1
+Correct: 100.00%
+Average time per run: 0.51s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.025, stepSize = 1
+Correct: 98.00%
+Average time per run: 0.24s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.05, stepSize = 1
+Correct: 83.00%
+Average time per run: 0.10s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 1
+Correct: 72.00%
+Average time per run: 0.05s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 29.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 5, stepSize = 1
+Correct: 4.00%
+Average time per run: 0.00s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 10, stepSize = 1
+Correct: 1.00%
+Average time per run: 0.00s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 15, stepSize = 1
+Correct: 2.00%
+Average time per run: 0.00s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 20, stepSize = 1
+Correct: 0.00%
+Average time per run: 0.00s
+
+
+
+Test 5: Variation of stepSize, coolingSpeed = 1
+-------------------------------
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 0.1
+Correct: 0.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 0.5
+Correct: 16.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 1
+Correct: 42.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 1.5
+Correct: 43.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 2
+Correct: 30.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 5
+Correct: 37.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 10
+Correct: 25.00%
+Average time per run: 0.01s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 1, stepSize = 20
+Correct: 14.00%
+Average time per run: 0.01s
+
+
+
+Test 6: Variation of stepSize, coolingSpeed = 0.1
+-------------------------------
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 0.1
+Correct: 4.00%
+Average time per run: 0.05s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 0.5
+Correct: 69.00%
+Average time per run: 0.05s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 1
+Correct: 64.00%
+Average time per run: 0.05s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 1.5
+Correct: 62.00%
+Average time per run: 0.05s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 2
+Correct: 66.00%
+Average time per run: 0.05s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 5
+Correct: 55.00%
+Average time per run: 0.05s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 10
+Correct: 48.00%
+Average time per run: 0.05s
+
+
+initialTemp = 100, finalTemp = 1, coolingSpeed = 0.1, stepSize = 20
+Correct: 34.00%
+Average time per run: 0.05s
+
+
