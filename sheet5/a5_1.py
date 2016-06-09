@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import argparse
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.stats import chi2
 
 
