@@ -19,25 +19,21 @@ def get_input():
                         help='upper bound')
     return parser.parse_args()
 
-def P(x, *params):
+def P(x, *p):
     y = np.zeros_like(x)
-    for i in range(len(params)):
-        a = params[i]
-        y = y + a * x**i
+    for i in range(len(p)):
+        y = y + p[i] * x**i
     return y
 
-def L(x, *params):
+def L(x, *p):
     y = np.zeros_like(x)
-    for i in range(0, len(params), 3):
-        m = params[i]
-        A = params[i+1]
-        g = params[i+2]
-        y = y + (A * g / 2.) / (np.pi * ((x - m)**2 + (g / 2.)**2))
+    for i in range(0, len(p), 3):
+        y = y + (p[i+1] * p[i+2] / 2.) / (np.pi * ((x - p[i])**2 + (p[i+2] / 2.)**2))
     return y
 
-def PL(x, *params):
-    skip = int(params[0]) + 2
-    return L(x, *params[skip:]) + P(x, *params[1:skip])
+def PL(x, *p):
+    skip = int(p[0]) + 2
+    return L(x, *p[skip:]) + P(x, *p[1:skip])
 
 def get_parameter_array(pd, candidates):
     return np.concatenate(((pd,), np.ones(pd + 1), candidates))
@@ -45,7 +41,12 @@ def get_parameter_array(pd, candidates):
 def method_a(data_x, data_y, pd, peak):
     sig_y = np.sqrt(data_y)
     p0 = get_parameter_array(pd, peak)
-    popt, pcov = curve_fit(PL, data_x, data_y, p0=p0, sigma=sig_y, method='trf')
+    popt, pcov = curve_fit(PL,
+                           data_x,
+                           data_y,
+                           p0=p0,
+                           sigma=sig_y,
+                           method='trf')
     return popt, pcov
 
 def method_b(data_x, data_y, pd, peak, xl, xh):
@@ -54,8 +55,12 @@ def method_b(data_x, data_y, pd, peak, xl, xh):
     # fit polynomial
     idb = np.where((data_x < xl) | (data_x > xh)) # index of background values
     p0_p = np.ones(pd + 1)
-    popt_p, pcov_p = curve_fit(P, data_x[idb], data_y[idb],
-                               p0=p0_p, sigma=sig_y[idb], method='trf')
+    popt_p, pcov_p = curve_fit(P,
+                               data_x[idb],
+                               data_y[idb],
+                               p0=p0_p,
+                               sigma=sig_y[idb],
+                               method='trf')
 
     # subtract polynomial from data
     fit_y = data_y - P(data_x, *popt_p)
@@ -63,8 +68,12 @@ def method_b(data_x, data_y, pd, peak, xl, xh):
     # fit lorentz
     ids = np.where((data_x >= xl) & (data_x <= xh)) # index of signal values
     p0_l = np.array(peak)
-    popt_l, pcov_l = curve_fit(L, data_x[ids], fit_y[ids],
-                               p0=p0_l, sigma=sig_y[ids], method='trf')
+    popt_l, pcov_l = curve_fit(L,
+                               data_x[ids],
+                               fit_y[ids],
+                               p0=p0_l,
+                               sigma=sig_y[ids],
+                               method='trf')
 
     return popt_p, pcov_p, popt_l, pcov_l
 

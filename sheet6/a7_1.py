@@ -14,18 +14,16 @@ def get_input():
                         help='polynomial degree')
     return parser.parse_args()
 
-def P(x, *params):
+def P(x, *p):
     y = np.zeros_like(x)
-    for i in range(len(params)):
-        a = params[i]
-        y = y + a * x**i
+    for i in range(len(p)):
+        y = y + p[i] * x**i
     return y
 
-def L(x, *params):
+def L(x, *p):
     y = np.zeros_like(x)
-    for i in range(len(params)):
-        a = params[i]
-        y = y + a * legendre(x, i)
+    for i in range(len(p)):
+        y = y + p[i] * legendre(x, i)
     return y
 
 def legendre(x, k):
@@ -48,8 +46,18 @@ if __name__ == "__main__":
 
     # fits
     p0 = np.ones(pd + 1)
-    popt_p, pcov_p = curve_fit(P, data_x, data_y, p0=p0, sigma=sig_y, method='trf')
-    popt_l, pcov_l = curve_fit(L, data_x, data_y, p0=p0, sigma=sig_y, method='trf')
+    popt_p, pcov_p = curve_fit(P,
+                               data_x,
+                               data_y,
+                               p0=p0,
+                               sigma=sig_y,
+                               method='trf')
+    popt_l, pcov_l = curve_fit(L,
+                               data_x,
+                               data_y,
+                               p0=p0,
+                               sigma=sig_y,
+                               method='trf')
     pcor_p = get_cor_mat(pcov_p)
     pcor_l = get_cor_mat(pcov_l)
 
