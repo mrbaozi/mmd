@@ -50,6 +50,8 @@ if __name__ == "__main__":
     p0 = np.ones(pd + 1)
     popt_p, pcov_p = curve_fit(P, data_x, data_y, p0=p0, sigma=sig_y, method='trf')
     popt_l, pcov_l = curve_fit(L, data_x, data_y, p0=p0, sigma=sig_y, method='trf')
+    pcor_p = get_cor_mat(pcov_p)
+    pcor_l = get_cor_mat(pcov_l)
 
     # output
     np.set_printoptions(precision=5)
@@ -57,8 +59,13 @@ if __name__ == "__main__":
     print(popt_p)
     print(popt_l)
     print("\ncorrelations (polynomial / legendre):")
-    print(get_cor_mat(pcov_p))
-    print(get_cor_mat(pcov_l))
+    print(pcor_p)
+    print(pcor_l)
+    print("\naverage correlation (polynomial / legendre):")
+    iu = np.triu_indices(pd + 1, 1)
+    il = np.tril_indices(pd + 1, -1)
+    print(np.absolute(np.concatenate((pcor_p[iu], pcor_p[il]))).mean())
+    print(np.absolute(np.concatenate((pcor_l[iu], pcor_l[il]))).mean())
 
     # plot
     rng = np.linspace(min(data_x), max(data_x), 1000)
