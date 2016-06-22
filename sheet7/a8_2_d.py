@@ -2,27 +2,33 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import numpy.linalg as la
-from numpy.random import poisson
+# from numpy.random import poisson
 
-
-def regularize(R, obs, f0, iterations=10):
-    for _ in range(iterations):
-        g = R.dot(f0)
-        c = obs / g
-        f0 *= R.dot(c)
-    return g
 
 def regularize_goal(R, obs, f0, goal=0.1):
-    g = np.empty_like(obs)
-    f = np.copy(f0)
-    i = 0
-    while not np.allclose(g, obs, goal):
+    '''
+    regularization, takes an accuracy goal as input (for exercise a)
+    '''
+    g = np.empty_like(obs) # initialize result array
+    f = np.copy(f0)        # don't modify f0
+    i = 0                  # counter
+    while not np.allclose(g, obs, rtol=goal):
         g = R.dot(f)
         c = obs / g
         f *= R.dot(c)
         i += 1
     return g, i
+
+def regularize_iter(R, obs, f0, iterations=10):
+    '''
+    regularization, takes the number of iterations as input (for exercise b)
+    '''
+    f = np.copy(f0) # don't modify f0
+    for _ in range(iterations):
+        g = R.dot(f)
+        c = obs / g
+        f *= R.dot(c)
+    return g
 
 if __name__ == "__main__":
     # data
@@ -36,10 +42,12 @@ if __name__ == "__main__":
     R_a = diag_m + diag_u + diag_l
     R_a[0, 0], R_a[-1, -1] = 0.7, 0.7
 
-    # regularize
-    f0 = np.full(len(tdist), sum(tdist) / float(len(tdist)))
-    g_a, i = regularize_goal(R_a, tdist, f0, 0.1)
 
+    # regularize
+    f0 = np.full(len(tdist), sum(tdist) / float(len(tdist))) # 3000 / 7
+    g_a, i = regularize_goal(R_a, tdist, f0, 0.1)            # goal < 0.1 fails
+
+    # ouput
     print("iterations: {}".format(i))
     print("true     observed   delta")
     for x, y in zip(tdist, g_a):
