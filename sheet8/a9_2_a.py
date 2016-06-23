@@ -17,7 +17,7 @@ def no_background():
 def background(func):
     # init
     n = 6
-    CL_SB = 0.1
+    CL_SB = 0.1 # this should be either 10% or 90%, probably 10%
     upper_limit = 10
     n_points = 100
     v_tS = np.zeros((n, n_points))
