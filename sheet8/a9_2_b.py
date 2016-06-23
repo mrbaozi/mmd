@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from scipy.optimize import minimize
+from scipy.optimize import minimize, brentq
 import matplotlib.pyplot as plt
 
 from frequentist import *
@@ -36,21 +36,33 @@ def likelihood_approach():
     cut68 = np.sqrt(2) * TMath.ErfInverse(2 * 0.68 - 1) # 68% CL
     cut90 = np.sqrt(2) * TMath.ErfInverse(2 * 0.9 - 1)  # 90% CL
 
+    # find y values of cuts
+    cut68_y = -2 * ln_L_min_y + cut68
+    cut90_y = -2 * ln_L_min_y + cut90
+
+    # find roots (GetX)
+    def errfunc(x, cut):
+        return -2 * log_likelihood(x, n_0) - cut
+    lo68 = brentq(errfunc, 0.1, ln_L_min_x, args=(cut68_y))
+    hi68 = brentq(errfunc, ln_L_min_x, 10, args=(cut68_y))
+    lo90 = brentq(errfunc, 0.1, ln_L_min_x, args=(cut90_y))
+    hi90 = brentq(errfunc, ln_L_min_x, 10, args=(cut90_y))
+
     # print upper limit for comparison
     print("Method b):")
-    print("CL_SB(n_0={}, v_tB= {}) = {}".format(n_0, v_tB, ln_L_min_x + cut90))
+    print("CL_SB(n_0={}, v_tB= {}) = {}".format(n_0, v_tB, hi90))
 
     # plots
     fg, ax = plt.subplots(1, 1)
     ax.plot(rng, ln_L, 'k-', label='-2 ln(L)')          # -2 ln(L)
     ax.plot(ln_L_min_x, -2 * ln_L_min_y, 'ro',          # minimum
             label='L_min = ({:.1f}, {:.1f})'.format(ln_L_min_x, -2 * ln_L_min_y))
-    ax.axvspan(ln_L_min_x - cut68, ln_L_min_x + cut68,  # 68% CL
+    ax.axvspan(lo68, hi68,  # 68% CL
                alpha=0.2, color='blue', linewidth=2, hatch='/', label='68% CL')
-    ax.axvspan(ln_L_min_x - cut90, ln_L_min_x + cut90,  # 90% CL
+    ax.axvspan(lo90, hi90,  # 90% CL
                alpha=0.3, color='blue', label='90% CL')
-    ax.axvline(ln_L_min_x + cut90, color='red',         # 90% upper lim
-               label='upper limit = {:.3f}'.format(ln_L_min_x + cut90))
+    ax.axvline(hi90, color='red',         # 90% upper lim
+               label='upper limit = {:.3f}'.format(hi90))
     ax.set_title('Likelihood approach, n_0 = {}, v_tB = {}'.format(n_0, v_tB))
     ax.set_xlabel('v_t')
     ax.set_ylabel('-2 ln(L)')
