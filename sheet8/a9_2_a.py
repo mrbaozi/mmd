@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from scipy.stats import poisson
+from frequentist import limit
 
 
-def main():
-    print(poisson(1, 1))
+def no_background():
+    v_tB = 0
+    n_0 = 3
+    print(limit(n_0, v_tB, 0.1))
+
+def background():
+    v_tB = 0
+    n_0 = 3
+    print(limit(n_0, v_tB, 0.1))
 
 if __name__ == "__main__":
-    main()
+    no_background()
