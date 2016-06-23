@@ -57,29 +57,22 @@ def pvalue_function_cls(x, par):
 
     return result
 
-def limit(n, b, pvalue, normalizeCLs=0):
+def limit(n, b, pvalue, func):
     '''
     Compute the value of s for which you reach the given p-value, if you
     observe n events and expect b background events
-    set normalizeCLs to != 0 to use CL_S instead of CL_SB
     '''
 
     min = -1        # almost -infinity, since negetive values are not meaningful
     max = +10*(n+1) # almost +infinity on relevant scale
 
     # function of one parameter varying between min and max
-    pvf1 = TF1("pvf1", pvalue_function_classical, min, max, 2)
-    pvf2 = TF1("pvf2", pvalue_function_cls, min, max, 2)
+    pvf = TF1("pvf", func, min, max, 2)
 
-    pvf1.SetParameter(0, n)
-    pvf1.SetParameter(1, b)
-    pvf2.SetParameter(0, n)
-    pvf2.SetParameter(1,b)
+    pvf.SetParameter(0, n)
+    pvf.SetParameter(1, b)
 
     limit = 0
-    if normalizeCLs:
-        limit = pvf2.GetX(pvalue, min, max)
-    else:
-        limit = pvf1.GetX(pvalue, min, max)
+    limit = pvf.GetX(pvalue, min, max)
 
     return limit
