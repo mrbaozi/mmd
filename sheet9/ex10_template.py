@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# ------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------
 """
 .. module:: ex10_template
-    :synopsis example for discriminant analysis 
+    :synopsis example for discriminant analysis
 
 .. moduleauthor Thomas Keck
 """
-# ------------------------------------------------------------------------ 
-# useful imports 
+# ------------------------------------------------------------------------
+# useful imports
 
 import bisect
 import numpy as np
@@ -23,19 +23,19 @@ from matplotlib import pyplot as plt
 data = np.loadtxt('iris.data')
 
 # Define dictionary with columns names: s=sepal, p=petal, l=lenght, w=width,
-columns = {0: 'L(Kelch)', 1: 'W(Kelch)', 
+columns = {0: 'L(Kelch)', 1: 'W(Kelch)',
            2: 'L(Blatt)', 3: 'W(Blatt)', 4: 'class'}
 
-# Define boolean arrays corresponding to the three 
+# Define boolean arrays corresponding to the three
 #      classes setosa, versicolor and virginica
 setosa = data[:, 4] == 0
 versicolor = data[:, 4] == 1
 virginica = data[:, 4] == 2
 
 # Signal is versicolor (can be changed to setosa or virginica)
-signal = versicolor 
+signal = versicolor
 bckgrd = ~signal
-# !! note: see indexing of arrays with boolenan array in pyhthon documentation 
+# !! note: see indexing of arrays with boolenan array in pyhthon documentation
 #
 # exmaples how to access the data:
 #    data[signal]     # All events classified as signal
@@ -51,7 +51,7 @@ bckgrd = ~signal
 ### ------- helper functions ----------------------------------
 class Plotter(object):
     """
-        class to display and evaluate the performance of a test-statistic 
+        class to display and evaluate the performance of a test-statistic
     """
     def __init__(self, signal_data, bckgrd_data):
         self.signal_data = signal_data
@@ -63,10 +63,10 @@ class Plotter(object):
         xdim = 0
         # and 2nd variable as y-dimension
         ydim = 1
-        # Draw the scatter-plots of signal and background 
-        plt.scatter(self.signal_data[:, xdim], self.signal_data[:, ydim], 
+        # Draw the scatter-plots of signal and background
+        plt.scatter(self.signal_data[:, xdim], self.signal_data[:, ydim],
           c='r', label='Signal')
-        plt.scatter(self.bckgrd_data[:, xdim], self.bckgrd_data[:, ydim], 
+        plt.scatter(self.bckgrd_data[:, xdim], self.bckgrd_data[:, ydim],
           c='b', label='Background')
 
         # Evaluate the response function on a two-dimensional grid ...
@@ -102,27 +102,27 @@ class Plotter(object):
 
     def plot_test_statistic(self, classifier):
         # Draw Distribution of the test-statistic
-        ns, binss, _ = plt.hist(map(classifier.evaluate, self.signal_data), 
+        ns, binss, _ = plt.hist(map(classifier.evaluate, self.signal_data),
           color='r', alpha=0.5, label='Signal' )
-        nb, binsb, _ = plt.hist( map(classifier.evaluate, self.bckgrd_data), 
-           color='b', alpha=0.5, label='Background' ) 
+        nb, binsb, _ = plt.hist( map(classifier.evaluate, self.bckgrd_data),
+           color='b', alpha=0.5, label='Background' )
         plt.title("test statistic")
         plt.show()
 
     # calculate efficiencies and plot ROC-curves
     def plot_roc(self, classifier):
-        ns, binss = np.histogram(map(classifier.evaluate, self.signal_data)) 
-        nb, binsb = np.histogram(map(classifier.evaluate, self.bckgrd_data)) 
+        ns, binss = np.histogram(map(classifier.evaluate, self.signal_data))
+        nb, binsb = np.histogram(map(classifier.evaluate, self.bckgrd_data))
         # enforce common binning for response on bkg and sig
         minresp=min([ binss[0], binsb[0] ])
         maxresp=max([ binss[len(binss)-1], binsb[len(binsb)-1] ])
         nbins=100
-        bins=np.linspace(minresp, maxresp, nbins) 
+        bins=np.linspace(minresp, maxresp, nbins)
         bwid=(maxresp-minresp)/nbins
         # calculate cumulative distributions (i.e. bkg and sig efficiencies)
         h, b = np.histogram( map(classifier.evaluate, self.signal_data), bins, density=True)
         ns = np.cumsum(h)*bwid
-        h, b = np.histogram( map(classifier.evaluate, self.bckgrd_data), bins, density=True) 
+        h, b = np.histogram( map(classifier.evaluate, self.bckgrd_data), bins, density=True)
         nb = np.cumsum(h)*bwid
         # finally, draw bkg-eff vs. sig-eff
         f2, ax = plt.subplots(1, 1)
@@ -134,7 +134,7 @@ class Plotter(object):
 
 def find_bin(x, edges):
     """
-        returns the bin number (in array of bin edges) corresponding to x 
+        returns the bin number (in array of bin edges) corresponding to x
         @param x: value for which to find correspoding bin number
         @param edges: array of bin edges
     """
@@ -149,7 +149,7 @@ class CutClassifier(object):
         template implementation of a Classifier Class
     """
     def fit(self, signal_data, bckgrd_data):
-        """ 
+        """
             set up classifier ("training")
         """
     # some examples of what might be useful:
@@ -158,7 +158,7 @@ class CutClassifier(object):
         self.signal_hist, _ = np.histogramdd(signal_data, bins=self.edges)
         self.bckgrd_hist, _ = np.histogramdd(bckgrd_data, bins=self.edges)
 
-      # 2. mean and covariance matrix 
+      # 2. mean and covariance matrix
         self.signal_mean = np.mean(signal_data, axis=0)
         self.signal_cov = np.cov(signal_data.T)
         self.bckgrd_mean = np.mean(bckgrd_data, axis=0)
@@ -168,7 +168,7 @@ class CutClassifier(object):
     # simple example of a cut-base classifier
         c=0
         for i in range(len(x)):
-           c+=(x[i] < (self.signal_mean[i] + self.bckgrd_mean[i])/2.)       
+           c+=(x[i] < (self.signal_mean[i] + self.bckgrd_mean[i])/2.)
         return c
 
 # example how to use a Classifier Class with the Plotter Class
@@ -180,7 +180,7 @@ cut.fit(data[signal, :ndim], data[bckgrd, :ndim])
 
 # initialize Plotter Class
 plotter = Plotter(data[signal, :ndim], data[bckgrd, :ndim])
-# and amke plots 
+# and amke plots
 plotter.plot_contour(cut)
 plotter.plot_test_statistic(cut)
 plotter.plot_roc(cut)
@@ -193,7 +193,7 @@ f, axarr = plt.subplots(nvar, nvar)
 plt.tight_layout()
 nbins=20
  # add your code here ...
-           
+
 plt.show()
 
 #-----------------------------------------------------------------
