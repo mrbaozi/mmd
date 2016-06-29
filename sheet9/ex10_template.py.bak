@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------
 """
@@ -102,17 +102,17 @@ class Plotter(object):
 
     def plot_test_statistic(self, classifier):
         # Draw Distribution of the test-statistic
-        ns, binss, _ = plt.hist(list(map(classifier.evaluate, self.signal_data)),
+        ns, binss, _ = plt.hist(map(classifier.evaluate, self.signal_data),
           color='r', alpha=0.5, label='Signal' )
-        nb, binsb, _ = plt.hist( list(map(classifier.evaluate, self.bckgrd_data)),
+        nb, binsb, _ = plt.hist( map(classifier.evaluate, self.bckgrd_data),
            color='b', alpha=0.5, label='Background' )
         plt.title("test statistic")
         plt.show()
 
     # calculate efficiencies and plot ROC-curves
     def plot_roc(self, classifier):
-        ns, binss = np.histogram(list(map(classifier.evaluate, self.signal_data)))
-        nb, binsb = np.histogram(list(map(classifier.evaluate, self.bckgrd_data)))
+        ns, binss = np.histogram(map(classifier.evaluate, self.signal_data))
+        nb, binsb = np.histogram(map(classifier.evaluate, self.bckgrd_data))
         # enforce common binning for response on bkg and sig
         minresp=min([ binss[0], binsb[0] ])
         maxresp=max([ binss[len(binss)-1], binsb[len(binsb)-1] ])
@@ -120,9 +120,9 @@ class Plotter(object):
         bins=np.linspace(minresp, maxresp, nbins)
         bwid=(maxresp-minresp)/nbins
         # calculate cumulative distributions (i.e. bkg and sig efficiencies)
-        h, b = np.histogram( list(map(classifier.evaluate, self.signal_data)), bins, density=True)
+        h, b = np.histogram( map(classifier.evaluate, self.signal_data), bins, density=True)
         ns = np.cumsum(h)*bwid
-        h, b = np.histogram( list(map(classifier.evaluate, self.bckgrd_data)), bins, density=True)
+        h, b = np.histogram( map(classifier.evaluate, self.bckgrd_data), bins, density=True)
         nb = np.cumsum(h)*bwid
         # finally, draw bkg-eff vs. sig-eff
         f2, ax = plt.subplots(1, 1)
