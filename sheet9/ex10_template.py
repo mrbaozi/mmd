@@ -23,6 +23,7 @@ from matplotlib import pyplot as plt
 data = np.loadtxt('iris.data')
 
 # Define dictionary with columns names: s=sepal, p=petal, l=lenght, w=width,
+flowers = {'setosa', 'versicolor', 'virginica'}
 columns = {0: 'L(Kelch)', 1: 'W(Kelch)',
            2: 'L(Blatt)', 3: 'W(Blatt)', 4: 'class'}
 
@@ -175,15 +176,15 @@ class CutClassifier(object):
 ndim = 2
 
 # initialise Classifier with training data
-cut = CutClassifier()
-cut.fit(data[signal, :ndim], data[bckgrd, :ndim])
+# cut = CutClassifier()
+# cut.fit(data[signal, :ndim], data[bckgrd, :ndim])
 
 # initialize Plotter Class
-plotter = Plotter(data[signal, :ndim], data[bckgrd, :ndim])
+# plotter = Plotter(data[signal, :ndim], data[bckgrd, :ndim])
 # and amke plots
-plotter.plot_contour(cut)
-plotter.plot_test_statistic(cut)
-plotter.plot_roc(cut)
+# plotter.plot_contour(cut)
+# plotter.plot_test_statistic(cut)
+# plotter.plot_roc(cut)
 
 
 # ------------------------------------------------------------------
@@ -192,13 +193,64 @@ nvar=4
 f, axarr = plt.subplots(nvar, nvar)
 plt.tight_layout()
 nbins=20
- # add your code here ...
+# add your code here ...
+colors = {'r', 'g', 'b'}
+for i in range(nvar):
+    for j in range(nvar):
+        for flower, c in zip(flowers, colors):
+            sig = eval(flower)
+            if i == j:
+                axarr[i, j].hist(data[sig, i], bins=20, color=c, label=flower)
+                axarr[i, j].set_title(columns[i])
+            else:
+                axarr[i, j].scatter(data[sig, j], data[sig, i], color=c)
+                axarr[i, j].set_xlabel(columns[j])
+                axarr[i, j].set_ylabel(columns[i])
 
+axarr[1, 1].legend(bbox_to_anchor=(0.5, -0.3), loc='center', ncol=3)
+f.set_size_inches(20, 10, forward=True)
 plt.show()
 
 #-----------------------------------------------------------------
 #Exercise 2
 
+class LikelihoodClassifier(object):
+    def fit(self, signal_data, bckgrd_data):
+        """
+            set up classifier ("training")
+        """
+    # some examples of what might be useful:
+      # 1. signal and background histograms with same binning
+        _, self.edges = np.histogramdd(np.vstack([signal_data, bckgrd_data]), bins=10)
+        self.signal_hist, _ = np.histogramdd(signal_data, bins=self.edges)
+        self.bckgrd_hist, _ = np.histogramdd(bckgrd_data, bins=self.edges)
+
+      # 2. mean and covariance matrix
+        self.signal_mean = np.mean(signal_data, axis=0)
+        self.signal_cov = np.cov(signal_data.T)
+        self.bckgrd_mean = np.mean(bckgrd_data, axis=0)
+        self.bckgrd_cov = np.cov(bckgrd_data.T)
+
+    def evaluate(self, x):
+    # simple example of a cut-base classifier
+        c=0
+        for i in range(len(x)):
+           c+=(x[i] < (self.signal_mean[i] + self.bckgrd_mean[i])/2.)
+        return c
+
+# example how to use a Classifier Class with the Plotter Class
+ndim = 2
+
+# initialise Classifier with training data
+# llh = LikelihoodClassifier()
+# llh.fit(data[signal, :ndim], data[bckgrd, :ndim])
+
+# initialize Plotter Class
+# plotter = Plotter(data[signal, :ndim], data[bckgrd, :ndim])
+# and make plots
+# plotter.plot_contour(llh)
+# plotter.plot_test_statistic(llh)
+# plotter.plot_roc(llh)
 
 #------------------------------------------------------------------
 # Exercise 3
