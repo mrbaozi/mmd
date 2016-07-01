@@ -35,7 +35,8 @@ virginica = data[:, 4] == 2
 
 # Signal is versicolor (can be changed to setosa or virginica)
 ndim = 2
-signal = setosa
+signal = versicolor
+# signal = setosa
 bckgrd = ~signal
 # !! note: see indexing of arrays with boolenan array in pyhthon documentation
 #
@@ -215,18 +216,18 @@ plt.show()
 class LikelihoodClassifier(object):
 
     def fit(self, signal_data, bckgrd_data):
-
-        _, self.edges = np.histogramdd(np.vstack([signal_data, bckgrd_data]), bins=2)
+        _, self.edges = np.histogramdd(np.vstack([signal_data, bckgrd_data]), bins=10)
         self.signal_hist, _ = np.histogramdd(signal_data, bins=self.edges)
         self.bckgrd_hist, _ = np.histogramdd(bckgrd_data, bins=self.edges)
 
     def evaluate(self, x):
-
         point = np.zeros_like(x, dtype=int)
         for i in range(len(x)):
             point[i] = find_bin(x[i], self.edges[i])
+
+        if self.bckgrd_hist[tuple(point)] == 0:
+            return 10
         return self.signal_hist[tuple(point)] / self.bckgrd_hist[tuple(point)]
-        # return 1 if self.signal_hist[tuple(point)] / self.bckgrd_hist[tuple(point)] > 0 else -1
 
 lh = LikelihoodClassifier()
 lh.fit(data[signal, :ndim], data[bckgrd, :ndim])
@@ -240,15 +241,11 @@ plotter.plot_contour(lh)
 # Exercise 3
 
 def gaussdd(x, mu, sig):
-    t = np.zeros_like(x)
-    for i in range(len(x)):
-        t[i] = ((x[i] - mu[i])**2 / (2 * sig[i]**2))
-    return np.exp(-(np.sum(t)))
+    return np.exp(-(np.sum(((x - mu)**2 / (2 * sig**2)))))
 
 class LogLikelihoodClassifier(object):
 
     def fit(self, signal_data, bckgrd_data):
-
         _, self.edges = np.histogramdd(np.vstack([signal_data, bckgrd_data]), bins=10)
         self.signal_hist, _ = np.histogramdd(signal_data, bins=self.edges)
         self.bckgrd_hist, _ = np.histogramdd(bckgrd_data, bins=self.edges)
@@ -261,19 +258,10 @@ class LogLikelihoodClassifier(object):
         self.bckgrd_stddev = np.sqrt(np.diag(self.bckgrd_cov))
 
     def evaluate(self, x):
-
         p_signal = gaussdd(x, self.signal_mean, self.signal_stddev)
         p_bckgrd = gaussdd(x, self.bckgrd_mean, self.bckgrd_stddev)
 
-        # prior_signal = 1/3
-        # prior_bckgrd = 2/3
-        # post_signal = prior_signal * np.prod(p_signal)
-        # post_bckgrd = prior_bckgrd * np.prod(p_bckgrd)
-        post_signal = np.prod(p_signal)
-        post_bckgrd = np.prod(p_bckgrd)
-
-        return np.log(post_signal / post_bckgrd)
-        # return 1 if np.log(post_signal / post_bckgrd) > 0 else -1
+        return np.log(p_signal / p_bckgrd)
 
 llh = LogLikelihoodClassifier()
 llh.fit(data[signal, :ndim], data[bckgrd, :ndim])
@@ -289,7 +277,6 @@ plotter.plot_contour(llh)
 class FisherLinearClassifier(object):
 
     def fit(self, signal_data, bckgrd_data):
-
         _, self.edges = np.histogramdd(np.vstack([signal_data, bckgrd_data]), bins=10)
         self.signal_hist, _ = np.histogramdd(signal_data, bins=self.edges)
         self.bckgrd_hist, _ = np.histogramdd(bckgrd_data, bins=self.edges)
@@ -307,7 +294,6 @@ class FisherLinearClassifier(object):
 
     def evaluate(self, x):
         return np.dot(x, self.fish) / np.linalg.norm(self.fish)
-        # return 1 if np.dot(x, self.fish) / np.linalg.norm(self.fish) > 0 else -1
 
     def plot_separation(self):
         sig = np.dot(self.signal_data, self.fish)
